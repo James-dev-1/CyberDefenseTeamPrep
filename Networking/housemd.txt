@@ -37,7 +37,7 @@ set deviceconfig system service disable-snmp yes
 set deviceconfig system login-banner "Warning: Only authorized users are permitted to login. All network activity is being monitored and logged, and may be used to investigate and prosecute any instance of unauthorized access."
 set deviceconfig system ack-login-banner yes
 
-set application-group Outbound_Apps members [ web-browsing ssl apt-get yum git-base github google-base ms-update pastebin sourceforge-base subversion-base ping ocsp paloalto-updates pan-db-cloud dns soap dns-base ]
+set application-group Outbound_Apps members [ web-browsing ssl apt-get yum git-base github-base google-base ms-update pastebin ping ocsp paloalto-updates pan-db-cloud dns dns-base ]
 set application-group Internal_Apps members [ ntp dns ssh ping web-browsing ssl  mysql splunk snmp snmp-trap ]
 set application-group Log_Apps members [ splunk ssl web-browsing syslog ]
 
@@ -316,6 +316,19 @@ set rulebase security rules INSIDE2SPLUNK action allow
 set rulebase security rules INSIDE2SPLUNK log-start no
 set rulebase security rules INSIDE2SPLUNK log-end yes
 set rulebase security rules INSIDE2SPLUNK log-setting defaultlogs
+
+set rulebase security rules BaseDeny profile-setting group ccdc
+set rulebase security rules BaseDeny application any
+set rulebase security rules BaseDeny service any
+set rulebase security rules BaseDeny to any
+set rulebase security rules BaseDeny from any
+set rulebase security rules BaseDeny source any
+set rulebase security rules BaseDeny destination any
+set rulebase security rules BaseDeny action deny
+set rulebase security rules BaseDeny log-start no
+set rulebase security rules BaseDeny log-end yes
+set rulebase security rules BaseDeny log-settings defaultlogs
+move rulebase security rules BaseDeny bottom
 
 
 set rulebase nat rules splunk-to-wkst to External
